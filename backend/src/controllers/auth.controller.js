@@ -1,6 +1,6 @@
-import User from '../models/user.model.js';
-import bcrypt from 'bcryptjs';
-import { createAccessToken } from '../libs/jwt.js';
+import User from '../models/user.model.js'
+import bcrypt from 'bcryptjs'
+import { createAccessToken } from '../libs/jwt.js'
 
 export const register = async (req, res) => {
   const {
@@ -10,10 +10,10 @@ export const register = async (req, res) => {
     email,
     password,
     rol
-  } = req.body;
+  } = req.body
 
   try {
-    const passwordHash = await bcrypt.hash(password, 10);
+    const passwordHash = await bcrypt.hash(password, 10)
 
     const newUser = new User({
       firstName,
@@ -22,56 +22,68 @@ export const register = async (req, res) => {
       email,
       password: passwordHash,
       rol
-    });
+    })
 
-    const userSave = await newUser.save();
-    const token = await createAccessToken({ id: userSave._id });
+    const userSave = await newUser.save()
+    const token = await createAccessToken({ id: userSave._id })
 
-    res.cookie('token', token);
+    res.cookie('token', token)
     res.json({
-      _id: userSave._id,
+      id: userSave._id,
       handle: userSave.handle,
       rol: userSave.rol,
       createdAt: userSave.createdAt,
       updatedAt: userSave.updatedAt
-    });
+    })
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message })
   }
-};
+}
 
 export const login = async (req, res) => {
   const {
     handle,
     password
-  } = req.body;
+  } = req.body
 
   try {
-    const userFond = await User.findOne({ handle })
-    if(!userFond) return res.status(400).json({ message: 'User not found.'});
-    
-    const isMatch = await bcrypt.compare(password, userFond.password);
-    if(!isMatch) return  res.status(400).json({ message: 'Invalid credentials.'});
-    
-    const token = await createAccessToken({ id: userFond._id });
+    const userFound = await User.findOne({ handle })
+    if (!userFound) return res.status(400).json({ message: 'User not found.' })
 
-    res.cookie('token', token);
+    const isMatch = await bcrypt.compare(password, userFound.password)
+    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials.' })
+
+    const token = await createAccessToken({ id: userFound._id })
+
+    res.cookie('token', token)
     res.json({
-      _id: userFond._id,
-      handle: userFond.handle,
-      rol: userFond.rol,
-      createdAt: userFond.createdAt,
-      updatedAt: userFond.updatedAt
-    });
+      id: userFound._id,
+      handle: userFound.handle,
+      rol: userFound.rol,
+      createdAt: userFound.createdAt,
+      updatedAt: userFound.updatedAt
+    })
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message })
   }
-};
+}
 
 export const logout = (req, res) => {
-  res.cookie('token', '', { 
-    expires: new Date(0) 
-  });
+  res.cookie('token', '', {
+    expires: new Date(0)
+  })
 
-  return res.sendStatus(200);
+  return res.sendStatus(200)
+}
+
+export const profile = async (req, res) => {
+  const userFound = await User.findById(req.decoded.id)
+  if (!userFound) return res.status(400).json({ message: 'User not found.' })
+
+  return res.json({
+    id: userFound._id,
+    handle: userFound.handle,
+    createdAt: userFound.createdAt,
+    updatedAt: userFound.updatedAt
+  })
 }

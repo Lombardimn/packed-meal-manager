@@ -2,4 +2,4 @@
  * CONSTANTS
  */
 
-export const TOKEN_KEY = 'some secret key';
+export const TOKEN_KEY = 'some secret key'

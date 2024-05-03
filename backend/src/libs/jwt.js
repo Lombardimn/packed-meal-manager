@@ -1,5 +1,5 @@
-import { TOKEN_KEY } from '../config.js';
-import jwt from 'jsonwebtoken';
+import { TOKEN_KEY } from '../config.js'
+import jwt from 'jsonwebtoken'
 
 export const createAccessToken = (payload) => {
   return new Promise((resolve, reject) => {
@@ -10,9 +10,9 @@ export const createAccessToken = (payload) => {
         expiresIn: '2h'
       },
       (err, token) => {
-        if(err) reject(err);
-        resolve(token);
+        if (err) reject(err)
+        resolve(token)
       }
     )
   })
-};
+}
