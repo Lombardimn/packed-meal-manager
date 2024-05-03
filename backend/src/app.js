@@ -1,7 +1,9 @@
 import express from 'express'
 import morgan from 'morgan'
-import authRoutes from './routes/auth.routes.js'
 import cookieParset from 'cookie-parser'
+
+import authRoutes from './routes/auth.routes.js'
+import clientsRoutes from './routes/clients.routes.js'
 
 const app = express()
 const PORT_SERVER = 4321
@@ -9,6 +11,8 @@ const PORT_SERVER = 4321
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(cookieParset())
+
 app.use('/api', authRoutes)
+app.use('/api/users', clientsRoutes)
 
 export { app, PORT_SERVER }
