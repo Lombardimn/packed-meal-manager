@@ -1,22 +1,34 @@
 import { Router } from 'express'
 import { register, login, logout, profile } from '../controllers/auth.controller.js'
+
 import { authRequired } from '../middlewares/validateToken.js'
+import { validateSchema } from '../middlewares/validator.middlewares.js'
+import { registerSchema, loginSchema } from '../validators/auth.schema.js'
 
 const router = Router()
 
-/**
- * POSTs
- */
+router.post(
+  '/register',
+  validateSchema(registerSchema),
+  register
+)
 
-router.post('/register', register)
-router.post('/login', login)
-router.post('/logout', logout)
+router.post(
+  '/login',
+  validateSchema(loginSchema),
+  login
+)
 
-/**
- * GETs
- */
+router.get(
+  '/profile',
+  authRequired,
+  profile
+)
 
-router.get('/profile', authRequired, profile)
+router.post(
+  '/logout',
+  logout
+)
 
 export default router
 
