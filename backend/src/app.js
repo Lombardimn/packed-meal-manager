@@ -13,6 +13,6 @@ app.use(express.json())
 app.use(cookieParset())
 
 app.use('/api', authRoutes)
-app.use('/api/users', clientsRoutes)
+app.use('/api/clients', clientsRoutes)
 
 export { app, PORT_SERVER }

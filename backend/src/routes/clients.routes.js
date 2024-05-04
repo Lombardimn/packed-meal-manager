@@ -13,8 +13,8 @@ const router = Router()
 router.get('/query', authRequired, getAllUsers)
 router.get('/query/:id', authRequired, getOneUser)
 
-router.delete('/deleted/:id', authRequired, deleteUsers)
-router.post('/new', authRequired, createUser)
-router.put('/update/:id', authRequired, updateUser)
+router.delete('/query/:id', authRequired, deleteUsers)
+router.post('/query', authRequired, createUser)
+router.put('/query/:id', authRequired, updateUser)
 
 export default router

@@ -22,5 +22,5 @@ export default router
 
 /**
  * Determino solo la rutas de comunicación con el servidor, las configuraciones de las rutas se
- * harán en losCONTROLADORES.
+ * harán en los CONTROLADORES.
  */
