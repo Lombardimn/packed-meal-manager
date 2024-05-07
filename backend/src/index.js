@@ -1,7 +1,9 @@
-import { app, PORT_SERVER } from './app.js'
+import { app } from './app.js'
 import { connectDB } from './db.js'
+import dotenv from 'dotenv'
+dotenv.config()
 
 connectDB()
 
-app.listen(PORT_SERVER)
-console.log('-----------------------\n Server on port:', PORT_SERVER, '\n http://localhost:' + PORT_SERVER, '\n-----------------------')
+app.listen(process.env.PORT)
+console.log('-----------------------\n Server on port:', process.env.PORT, '\n http://localhost:' + process.env.PORT, '\n-----------------------')

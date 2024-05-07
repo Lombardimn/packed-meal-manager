@@ -1,18 +1,47 @@
 import { useForm } from "react-hook-form"
+import { useState } from "react"
+import { Toaster, toast } from 'sonner'
 import { Navbar } from "../../components/Navbar"
 
 export const RegisterPage = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm()
 
+  // eslint-disable-next-line no-unused-vars
+  const [submitted, setSubmitted] = useState(false);
+    
+  const onSubmit = (data) => {
+      if (data.password !== data.confirmPassword) {
+        toast.error('Las contraseñas no coinciden', { duration: 3000 })
+        return
+      }
+      setSubmitted(true)
+      toast.success('Usuario registrado', { duration: 3000 })
+  };
+
+
+
   return (
     <>
       <Navbar />
 
+      <Toaster 
+        richColors 
+        theme="system" 
+        toastOptions={{
+          style: {
+            height: '40px',
+            padding: '4px',
+          },
+          className: 'class',
+        }}
+      />
+
       <div className="mx-12 pt-6">
+        <h2 className="text-3xl">Registrar Usuario</h2>
         <form 
           onSubmit={
-            handleSubmit(values => console.log(values))
+            handleSubmit(onSubmit)
           }
           className="bg-gray-800 rounded-xl p-8 flex flex-col gap-4 font-bold"
         >
@@ -82,12 +111,12 @@ export const RegisterPage = () => {
             {...register(
               "handle",
               {
-                required: 'Por favor ingresa un nickname',
-                maxLength: 20,
-                minLength: 8
+                required: 'Por favor ingrese un nickname',
+                maxLength: { value: 12, message: "No puede ser mayor a 12 caracteres" },
+                minLength: { value: 3, message: "No puede ser menor a 3 caracteres" }
               }
             )}
-            className="placeholder:italic placeholder:text-slate-300 block bg-white w-full border border-slate-300 rounded-md py-2 pl-4 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 text-slate-500"
+            className="placeholder:italic placeholder:text-slate-300 block bg-white w-full border border-slate-300 rounded-md py-2 pl-4 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 text-slate-500 invalid:focus:border-red-500"
           />
 
           {
@@ -130,7 +159,7 @@ export const RegisterPage = () => {
           <label 
             htmlFor="password"
             className="-mb-4 mt-3 after:content-['*'] after:ml-0.5 after:text-red-500"
-          >Contraseña:</label>
+          >Contraseña</label>
           <input 
             type="password" 
             placeholder="Contraseña"
@@ -140,7 +169,9 @@ export const RegisterPage = () => {
               "password",
               {
                 required: 'Por favor ingresa una contraseña',
-                minLength: 8
+                minLength: { value: 8, message: "No puede ser menor a 8 caracteres" },
+                pattern: { value: /(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}/g, message: "Debe contener al menos una letra mayúscula, una letra minúscula y un número" }
+                
               }
             )}
             className="placeholder:italic placeholder:text-slate-300 block bg-white w-full border border-slate-300 rounded-md py-2 pl-4 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 text-slate-500"
@@ -168,7 +199,8 @@ export const RegisterPage = () => {
               "confirmPassword",
               {
                 required: 'Por favor confirma una contraseña',
-                minLength: 8
+                minLength: { value: 8, message: "No puede ser menor a 8 caracteres" },
+                pattern: { value: /(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}/g, message: "Debe contener al menos una letra mayúscula, una letra minúscula y un número" }
               }
             )}
             className="placeholder:italic placeholder:text-slate-300 block bg-white w-full border border-slate-300 rounded-md py-2 pl-4 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 text-slate-500"
