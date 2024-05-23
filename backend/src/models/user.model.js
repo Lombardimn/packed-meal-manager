@@ -1,25 +1,13 @@
 import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    required: true,
-    trim: true,
-    maxlength: 20
-  },
-  lastName: {
-    type: String,
-    required: true,
-    trim: true,
-    maxlength: 32
-  },
-  handle: {
+  username: {
     type: String,
     required: true,
     trim: true,
     unique: true,
-    maxlength: 20,
-    minlength: 8
+    maxlength: 12,
+    minlength: 6
   },
   email: {
     type: String,
@@ -31,10 +19,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 8
-  },
-  rol: {
-    type: String,
-    required: true
   }
 },
 {

@@ -4,24 +4,18 @@ import { createAccessToken } from '../libs/jwt.js'
 
 export const register = async (req, res) => {
   const {
-    firstName,
-    lastName,
-    handle,
+    username,
     email,
-    password,
-    rol
+    password
   } = req.body
 
   try {
     const passwordHash = await bcrypt.hash(password, 10)
 
     const newUser = new User({
-      firstName,
-      lastName,
-      handle,
+      username,
       email,
-      password: passwordHash,
-      rol
+      password: passwordHash
     })
 
     const userSave = await newUser.save()
@@ -30,8 +24,8 @@ export const register = async (req, res) => {
     res.cookie('token', token)
     res.json({
       id: userSave._id,
-      handle: userSave.handle,
-      rol: userSave.rol,
+      username: userSave.username,
+      email: userSave.email,
       createdAt: userSave.createdAt,
       updatedAt: userSave.updatedAt
     })
@@ -42,12 +36,12 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   const {
-    handle,
+    username,
     password
   } = req.body
 
   try {
-    const userFound = await User.findOne({ handle })
+    const userFound = await User.findOne({ username })
     if (!userFound) return res.status(400).json({ message: 'User not found.' })
 
     const isMatch = await bcrypt.compare(password, userFound.password)
@@ -58,8 +52,7 @@ export const login = async (req, res) => {
     res.cookie('token', token)
     res.json({
       id: userFound._id,
-      handle: userFound.handle,
-      rol: userFound.rol,
+      username: userFound.username,
       createdAt: userFound.createdAt,
       updatedAt: userFound.updatedAt
     })
@@ -82,7 +75,8 @@ export const profile = async (req, res) => {
 
   return res.json({
     id: userFound._id,
-    handle: userFound.handle,
+    username: userFound.username,
+    email: userFound.email,
     createdAt: userFound.createdAt,
     updatedAt: userFound.updatedAt
   })

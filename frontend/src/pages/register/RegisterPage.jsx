@@ -12,6 +12,7 @@ export const RegisterPage = () => {
     
   const onSubmit = (data) => {
       if (data.password !== data.confirmPassword) {
+
         toast.error('Las contraseñas no coinciden', { duration: 3000 })
         return
       }
@@ -222,7 +223,7 @@ export const RegisterPage = () => {
           <select 
             name="roles" 
             id="roles"
-            defaultValue=""
+            defaultValue="Selecciona un rol"
             {...register(
               "roles",
               {
@@ -232,8 +233,9 @@ export const RegisterPage = () => {
             className="relative w-full cursor-default rounded-md bg-white py-3 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset focus:border-sky-500 focus:ring-sky-500 focus:ring-1"
           >
             <option 
-            value="" 
+            value= ''
             disabled
+            selected
             className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
             >Selecciona un rol</option>
             <option value="delivery">Delivery</option>
